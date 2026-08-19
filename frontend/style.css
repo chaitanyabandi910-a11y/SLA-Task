@@ -1,0 +1,628 @@
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+
+body {
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background: #f5f7fa;
+
+    color: #1f2937;
+
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.header {
+    background: #111827;
+
+    color: white;
+
+    padding: 24px 40px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.header h1 {
+    font-size: 24px;
+
+    margin-bottom: 6px;
+}
+
+
+.header p {
+    color: #9ca3af;
+
+    font-size: 14px;
+}
+
+
+.system-status {
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    font-size: 14px;
+}
+
+
+.status-dot {
+    width: 10px;
+
+    height: 10px;
+
+    border-radius: 50%;
+
+    background: #9ca3af;
+}
+
+
+.status-dot.online {
+    background: #22c55e;
+}
+
+
+.status-dot.offline {
+    background: #ef4444;
+}
+
+
+
+/* =========================================================
+   CONTAINER
+========================================================= */
+
+.container {
+    max-width: 1400px;
+
+    margin: auto;
+
+    padding: 30px 40px;
+}
+
+
+
+/* =========================================================
+   SECTIONS
+========================================================= */
+
+.upload-section,
+.stats-section,
+.logs-section {
+
+    background: white;
+
+    border: 1px solid #e5e7eb;
+
+    border-radius: 10px;
+
+    margin-bottom: 24px;
+
+    overflow: hidden;
+}
+
+
+.section-header {
+    padding: 22px 24px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+
+.section-header h2 {
+    font-size: 19px;
+
+    margin-bottom: 5px;
+}
+
+
+.section-header p {
+    font-size: 13px;
+
+    color: #6b7280;
+}
+
+
+
+/* =========================================================
+   UPLOAD
+========================================================= */
+
+.upload-box {
+    margin: 0 24px 24px;
+
+    border: 2px dashed #d1d5db;
+
+    border-radius: 8px;
+
+    padding: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+}
+
+
+.upload-box input {
+    display: none;
+}
+
+
+.upload-box label {
+    flex: 1;
+
+    cursor: pointer;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.upload-icon {
+    width: 36px;
+
+    height: 36px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    margin-bottom: 8px;
+}
+
+
+.upload-box label span {
+    color: #6b7280;
+
+    font-size: 12px;
+}
+
+
+
+/* =========================================================
+   BUTTONS
+========================================================= */
+
+.primary-button,
+.secondary-button {
+
+    border: none;
+
+    border-radius: 6px;
+
+    padding: 10px 16px;
+
+    cursor: pointer;
+
+    font-size: 13px;
+
+    font-weight: 600;
+}
+
+
+.primary-button {
+    background: #2563eb;
+
+    color: white;
+}
+
+
+.primary-button:hover {
+    background: #1d4ed8;
+}
+
+
+.secondary-button {
+    background: #f3f4f6;
+
+    color: #374151;
+
+    border: 1px solid #d1d5db;
+}
+
+
+.secondary-button:hover {
+    background: #e5e7eb;
+}
+
+
+
+/* =========================================================
+   MESSAGES
+========================================================= */
+
+.message {
+    margin: 0 24px 20px;
+
+    padding: 12px;
+
+    border-radius: 6px;
+
+    font-size: 13px;
+}
+
+
+.message.success {
+    background: #ecfdf5;
+
+    color: #047857;
+
+    border: 1px solid #a7f3d0;
+}
+
+
+.message.error {
+    background: #fef2f2;
+
+    color: #b91c1c;
+
+    border: 1px solid #fecaca;
+}
+
+
+.hidden {
+    display: none;
+}
+
+
+
+/* =========================================================
+   COLLAPSIBLE STATS
+========================================================= */
+
+.collapse-button {
+    width: 100%;
+
+    border: none;
+
+    background: #f9fafb;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    padding: 17px 24px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    font-size: 16px;
+
+    font-weight: 700;
+
+    color: #111827;
+}
+
+
+.stats-content {
+    padding: 24px;
+}
+
+
+
+/* =========================================================
+   KPI CARDS
+========================================================= */
+
+.kpi-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(6, 1fr);
+
+    gap: 14px;
+
+    margin-bottom: 24px;
+}
+
+
+.kpi-card {
+    border: 1px solid #e5e7eb;
+
+    border-radius: 8px;
+
+    padding: 18px;
+
+    background: #ffffff;
+}
+
+
+.kpi-label {
+    display: block;
+
+    font-size: 12px;
+
+    color: #6b7280;
+
+    margin-bottom: 10px;
+}
+
+
+.kpi-value {
+    font-size: 22px;
+
+    color: #111827;
+}
+
+
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+
+.table-title {
+    padding: 0 0 14px;
+}
+
+
+.table-title h3 {
+    font-size: 15px;
+}
+
+
+table {
+    width: 100%;
+
+    border-collapse: collapse;
+
+    font-size: 13px;
+}
+
+
+thead {
+    background: #f9fafb;
+}
+
+
+th {
+    text-align: left;
+
+    padding: 12px;
+
+    color: #6b7280;
+
+    font-weight: 600;
+
+    border-bottom: 1px solid #e5e7eb;
+
+    white-space: nowrap;
+}
+
+
+td {
+    padding: 12px;
+
+    border-bottom: 1px solid #f1f1f1;
+
+    white-space: nowrap;
+}
+
+
+tbody tr:hover {
+    background: #f9fafb;
+}
+
+
+.empty {
+    text-align: center;
+
+    color: #9ca3af;
+
+    padding: 30px;
+}
+
+
+
+/* =========================================================
+   SLA STATUS
+========================================================= */
+
+.sla-met {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 20px;
+
+    background: #dcfce7;
+
+    color: #166534;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+.sla-breached {
+    display: inline-block;
+
+    padding: 4px 8px;
+
+    border-radius: 20px;
+
+    background: #fee2e2;
+
+    color: #991b1b;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+.http-success {
+    color: #166534;
+
+    font-weight: 600;
+}
+
+
+.http-failure {
+    color: #b91c1c;
+
+    font-weight: 600;
+}
+
+
+
+/* =========================================================
+   FILTERS
+========================================================= */
+
+.filters {
+    padding: 0 24px 20px;
+
+    display: flex;
+
+    align-items: end;
+
+    gap: 12px;
+
+    flex-wrap: wrap;
+}
+
+
+.filter-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 5px;
+}
+
+
+.filter-group label {
+    font-size: 11px;
+
+    color: #6b7280;
+
+    font-weight: 600;
+}
+
+
+.filter-group input,
+.filter-group select {
+    height: 38px;
+
+    border: 1px solid #d1d5db;
+
+    border-radius: 6px;
+
+    padding: 0 10px;
+
+    background: white;
+
+    color: #374151;
+}
+
+
+.filter-button {
+    height: 38px;
+}
+
+
+.log-info {
+    padding: 0 24px 12px;
+
+    font-size: 12px;
+
+    color: #6b7280;
+}
+
+
+
+/* =========================================================
+   RESPONSIVE
+========================================================= */
+
+@media (max-width: 1100px) {
+
+    .kpi-grid {
+        grid-template-columns:
+            repeat(3, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .header {
+        padding: 20px;
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 15px;
+    }
+
+
+    .container {
+        padding: 20px;
+    }
+
+
+    .kpi-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .upload-box {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .filters {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+}

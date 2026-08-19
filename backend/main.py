@@ -1,8 +1,8 @@
 from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-
+import math
 from backend.database import get_connection
-
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="SLA Monitoring API",
@@ -272,30 +272,16 @@ def get_services():
         if connection:
             connection.close()
 
-
 # =========================================================
 # LOGS
 # =========================================================
 
 @app.get("/api/logs")
 def get_logs(
-    start_date: str | None = Query(
-        default=None
-    ),
-
-    end_date: str | None = Query(
-        default=None
-    ),
-
-    service_id: str | None = Query(
-        default=None
-    ),
-
-    limit: int = Query(
-        default=100,
-        ge=1,
-        le=1000
-    )
+    start_date: str | None = Query(default=None),
+    end_date: str | None = Query(default=None),
+    service_id: str | None = Query(default=None),
+    limit: int = Query(default=100, ge=1, le=1000)
 ):
 
     connection = None
@@ -303,9 +289,16 @@ def get_logs(
 
     try:
 
-        connection = get_connection()
+        # -------------------------------------------------
+        # DATABASE CONNECTION
+        # -------------------------------------------------
 
+        connection = get_connection()
         cursor = connection.cursor()
+
+        # -------------------------------------------------
+        # BASE QUERY
+        # -------------------------------------------------
 
         query = """
             SELECT
@@ -316,16 +309,14 @@ def get_logs(
                 status_code,
                 latency_ms,
                 source_file
-
             FROM monitoring_logs
-
             WHERE 1 = 1
         """
 
         parameters = []
 
         # -------------------------------------------------
-        # DATE FILTER
+        # START DATE
         # -------------------------------------------------
 
         if start_date:
@@ -334,9 +325,11 @@ def get_logs(
                 AND timestamp_utc >= %s::date
             """
 
-            parameters.append(
-                start_date
-            )
+            parameters.append(start_date)
+
+        # -------------------------------------------------
+        # END DATE
+        # -------------------------------------------------
 
         if end_date:
 
@@ -345,9 +338,7 @@ def get_logs(
                     (%s::date + INTERVAL '1 day')
             """
 
-            parameters.append(
-                end_date
-            )
+            parameters.append(end_date)
 
         # -------------------------------------------------
         # SERVICE FILTER
@@ -359,12 +350,10 @@ def get_logs(
                 AND service_id = %s
             """
 
-            parameters.append(
-                service_id
-            )
+            parameters.append(service_id)
 
         # -------------------------------------------------
-        # ORDER / LIMIT
+        # ORDER + LIMIT
         # -------------------------------------------------
 
         query += """
@@ -374,6 +363,10 @@ def get_logs(
 
         parameters.append(limit)
 
+        # -------------------------------------------------
+        # EXECUTE QUERY
+        # -------------------------------------------------
+
         cursor.execute(
             query,
             parameters
@@ -381,19 +374,56 @@ def get_logs(
 
         rows = cursor.fetchall()
 
+        # -------------------------------------------------
+        # BUILD RESPONSE
+        # -------------------------------------------------
+
         logs = []
 
         for row in rows:
+
+            # ---------------------------------------------
+            # Handle latency
+            # ---------------------------------------------
+
+            latency = row[5]
+
+            if latency is None:
+
+                latency_value = None
+
+            else:
+
+                latency_value = float(latency)
+
+                if (
+                    math.isnan(latency_value)
+                    or math.isinf(latency_value)
+                ):
+
+                    latency_value = None
+
+            # ---------------------------------------------
+            # Handle timestamp
+            # ---------------------------------------------
+
+            if row[1] is not None:
+
+                timestamp_value = row[1].isoformat()
+
+            else:
+
+                timestamp_value = None
+
+            # ---------------------------------------------
+            # Add record
+            # ---------------------------------------------
 
             logs.append({
 
                 "service_id": row[0],
 
-                "timestamp_utc": (
-                    row[1].isoformat()
-                    if row[1]
-                    else None
-                ),
+                "timestamp_utc": timestamp_value,
 
                 "agent": row[2],
 
@@ -401,17 +431,24 @@ def get_logs(
 
                 "status_code": row[4],
 
-                "latency_ms": float(row[5])
-                if row[5] is not None
-                else None,
+                "latency_ms": latency_value,
 
                 "source_file": row[6]
+
             })
+
+        # -------------------------------------------------
+        # RETURN RESPONSE
+        # -------------------------------------------------
 
         return {
             "count": len(logs),
             "logs": logs
         }
+
+    # =====================================================
+    # ERROR HANDLING
+    # =====================================================
 
     except Exception as e:
 
@@ -419,6 +456,10 @@ def get_logs(
             status_code=500,
             detail=str(e)
         )
+
+    # =====================================================
+    # CLOSE DATABASE CONNECTION
+    # =====================================================
 
     finally:
 
