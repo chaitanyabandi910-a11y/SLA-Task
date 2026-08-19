@@ -181,9 +181,6 @@ API at `http://127.0.0.1:8000` (see `API_BASE_URL` in `frontend/app.js`).
 | GET    | `/api/logs`     | Raw monitoring logs, filterable by `start_date`, `end_date`, `service_id`, `limit` |
 
 ## Notes / known gaps
-
-- `backend/requirements.txt` is currently empty — see the setup section
-  above for the packages that need to be installed.
 - `backend/sla.py` includes its own copies of load/normalize/clean logic
   (usable as a standalone CLI script) in addition to the
   `build_slot_status` / `calculate_sla_metrics` functions that `ingest.py`
